@@ -1,11 +1,14 @@
 /* ===== RESET & GLOBALS ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #0a0a0a;
@@ -32,7 +35,7 @@ html, body {
   box-shadow:
     0 0 0 3px #1a1a1a,
     0 0 0 6px #0d0d0d,
-    0 25px 60px rgba(0,0,0,0.6);
+    0 25px 60px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
 }
@@ -129,7 +132,7 @@ html, body {
 
 .platform-btn:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .platform-btn:active {
@@ -255,7 +258,7 @@ html, body {
   align-items: center;
 }
 
-.control-row > * {
+.control-row>* {
   flex: 1;
 }
 
@@ -447,7 +450,7 @@ html, body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   border: none;
   color: #fff;
   cursor: pointer;
@@ -552,17 +555,171 @@ html, body {
     border: none;
     border-top: 1px solid #262626;
   }
-  
+
   .phone-frame {
     border-radius: 0;
     width: 100%;
     height: 55vh;
     box-shadow: none;
   }
-  
+
   .back-btn {
     position: fixed;
     left: 8px;
     top: 8px;
   }
+}
+
+/* ===== VIDEO MODAL ===== */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.video-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.video-modal-content {
+  position: relative;
+  background: #161616;
+  border: 1px solid #262626;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: modalSlideUp 0.3s ease;
+}
+
+.video-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video-modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.video-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #222;
+  border: 1px solid #333;
+  color: #ccc;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.video-modal-close:hover {
+  background: #333;
+  color: #fff;
+}
+
+.video-modal-player {
+  width: 100%;
+  border-radius: 12px;
+  background: #000;
+  max-height: 60vh;
+}
+
+.video-modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.video-download-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: #ccc;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.video-download-btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RECORDING INDICATOR ===== */
+.recording-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff3b3b;
+  margin-right: 6px;
+  animation: recordPulse 1s infinite;
+}
+
+@keyframes recordPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+.send-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
 }

@@ -1,5 +1,6 @@
 import { goBack } from '../main.js';
 import { getTimestamp, createMessageId } from '../shared/utils.js';
+import { ChatRecorder } from './recorder.js';
 
 export function renderControlsPanel(platform) {
   const state = window.chatState;
@@ -131,6 +132,27 @@ export function renderControlsPanel(platform) {
     
     <div class="control-divider"></div>
     
+    <div class="control-group">
+      <label>🎬 Gravação de Vídeo</label>
+      <div class="control-group" style="gap:6px">
+        <label style="font-size:11px;">Delay entre mensagens: <span id="delay-value">2.0</span>s</label>
+        <input type="range" id="msg-delay-slider" min="500" max="5000" step="100" value="2000" style="width:100%;accent-color:${isWhatsApp ? '#25d366' : '#833ab4'};" />
+      </div>
+      <div class="control-group" style="gap:6px">
+        <label style="font-size:11px;">Duração do "digitando": <span id="typing-value">1.5</span>s</label>
+        <input type="range" id="typing-delay-slider" min="500" max="4000" step="100" value="1500" style="width:100%;accent-color:${isWhatsApp ? '#25d366' : '#833ab4'};" />
+      </div>
+      <button class="send-btn ${isWhatsApp ? 'whatsapp-send' : 'instagram-send'}" id="record-btn" style="background:${isWhatsApp ? 'linear-gradient(135deg, #1a6b4a, #0d3d2e)' : 'linear-gradient(135deg, #5b2d8e, #3b2070)'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <polygon points="23 7 16 12 23 17 23 7"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+        Gravar Vídeo
+      </button>
+    </div>
+    
+    <div class="control-divider"></div>
+    
     <button class="danger-btn" id="clear-msgs-btn" style="width:100%;">
       Limpar Conversa
     </button>
@@ -248,6 +270,32 @@ function setupControlEvents(platform) {
   document.getElementById('clear-msgs-btn').addEventListener('click', () => {
     state.messages = [];
     renderMessages(platform);
+  });
+
+  // Delay slider
+  const delaySlider = document.getElementById('msg-delay-slider');
+  const delayValue = document.getElementById('delay-value');
+  if (delaySlider) {
+    delaySlider.addEventListener('input', () => {
+      delayValue.textContent = (delaySlider.value / 1000).toFixed(1);
+    });
+  }
+
+  // Typing delay slider
+  const typingSlider = document.getElementById('typing-delay-slider');
+  const typingValue = document.getElementById('typing-value');
+  if (typingSlider) {
+    typingSlider.addEventListener('input', () => {
+      typingValue.textContent = (typingSlider.value / 1000).toFixed(1);
+    });
+  }
+
+  // Record button
+  document.getElementById('record-btn').addEventListener('click', () => {
+    const recorder = new ChatRecorder(platform);
+    recorder.messageDelay = parseInt(delaySlider.value) || 2000;
+    recorder.typingDuration = parseInt(typingSlider.value) || 1500;
+    recorder.start();
   });
 }
 
